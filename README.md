@@ -1,0 +1,1 @@
+Logger wrapper around Android Log.* with convenient api, auto conversion from object to strings and writing each log to file which can be shared then

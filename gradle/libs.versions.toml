@@ -1,0 +1,28 @@
+[versions]
+androidMinSdk = "21"
+androidTargetSdk = "35"
+androidCompileSdk = "35"
+
+jvmTarget = "17"
+
+libVersion = "1.0.0"
+
+desugaring = "2.1.5"
+kotlin = "2.1.10"
+agp = "8.8.2"
+
+detekt = "1.23.8"
+androidxCore = "1.15.0"
+
+[libraries]
+androidxCore = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
+
+kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+agp-gradle = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+detekt-gradle = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+
+[plugins]
+image-toolbox-library = { id = "image.toolbox.library", version = "unspecified" }
+image-toolbox-maven = { id = "image.toolbox.maven", version = "unspecified" }
