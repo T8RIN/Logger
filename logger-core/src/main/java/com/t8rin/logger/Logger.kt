@@ -20,6 +20,7 @@ package com.t8rin.logger
 import android.app.Application
 import android.net.Uri
 import androidx.core.net.toUri
+import com.t8rin.logger.Logger.Level
 import com.t8rin.logger.LogsWriter.Companion.MAX_SIZE
 import com.t8rin.logger.LogsWriter.Companion.STARTUP_LOG
 import android.util.Log as RealLog
@@ -29,10 +30,14 @@ import android.util.Log as RealLog
  **/
 data object Logger {
 
+    data object Flags {
+        var useCallerClassAsTag = false
+    }
+
     internal var logWriter: LogsWriter? = null
 
     inline fun <reified T> makeLog(
-        tag: String = "Logger" + (T::class.simpleName?.let { "_$it" } ?: ""),
+        tag: String = createTag<T>(),
         level: Level = Level.Debug,
         dataBlock: () -> T
     ) {
@@ -67,27 +72,6 @@ data object Logger {
         logWriter?.writeLog(log)
     }
 
-    inline fun <reified T> makeLog(
-        data: T,
-        tag: String = "Logger" + (T::class.simpleName?.let { "_$it" } ?: ""),
-        level: Level = Level.Debug,
-    ) = makeLog(
-        tag = tag,
-        level = level,
-        dataBlock = { data }
-    )
-
-    fun makeLog(
-        level: Level = Level.Debug,
-        separator: String = " - ",
-        vararg data: Any
-    ) = makeLog(
-        level = level,
-        dataBlock = {
-            data.toList().joinToString(separator)
-        }
-    )
-
     fun shareLogs() = logWriter?.shareLogs() ?: throw LogsWriterNotInitialized()
 
     fun shareLogsViaEmail(
@@ -117,8 +101,29 @@ data object Logger {
     )
 }
 
+inline fun <reified T> makeLog(
+    data: T,
+    tag: String = createTag<T>(),
+    level: Level = Level.Debug,
+) = Logger.makeLog(
+    tag = tag,
+    level = level,
+    dataBlock = { data }
+)
+
+fun makeLog(
+    level: Level = Level.Debug,
+    separator: String = " - ",
+    vararg data: Any
+) = Logger.makeLog(
+    level = level,
+    dataBlock = {
+        data.toList().joinToString(separator)
+    }
+)
+
 inline fun <reified T> T.makeLog(
-    tag: String = "Logger" + (T::class.simpleName?.let { "_$it" } ?: ""),
+    tag: String = createTag<T>(),
     level: Logger.Level = Logger.Level.Debug,
     dataBlock: (T) -> Any? = { it }
 ): T = also {
@@ -142,6 +147,13 @@ inline fun <reified T> T.makeLog(
 inline infix fun <reified T> T.makeLog(
     tag: String
 ): T = makeLog(tag) { this }
+
+
+inline fun <reified T> createTag(): String = if (Logger.Flags.useCallerClassAsTag) {
+    Throwable().stackTrace[1].className
+} else {
+    "Logger" + (T::class.simpleName?.let { "_$it" } ?: "")
+}
 
 
 fun Logger.attachLogWriter(
