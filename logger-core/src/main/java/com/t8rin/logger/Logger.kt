@@ -21,6 +21,7 @@ import android.app.Application
 import android.net.Uri
 import androidx.core.net.toUri
 import com.t8rin.logger.LogsWriter.Companion.MAX_SIZE
+import com.t8rin.logger.LogsWriter.Companion.STARTUP_LOG
 import android.util.Log as RealLog
 
 /**
@@ -147,7 +148,9 @@ fun Logger.attachLogWriter(
     context: Application,
     fileProvider: String,
     logsFilename: String,
-    isSyncCreate: Boolean,
+    isSyncCreate: Boolean = false,
+    startupLog: Logger.Log = STARTUP_LOG,
+    logMapper: LogMapper = LogMapper.Default,
     maxFileSize: Int? = MAX_SIZE
 ) {
     logWriter = LogsWriter(
@@ -155,6 +158,8 @@ fun Logger.attachLogWriter(
         fileProvider = fileProvider,
         logsFilename = logsFilename,
         maxFileSize = maxFileSize,
-        isSyncCreate = isSyncCreate
+        isSyncCreate = isSyncCreate,
+        startupLog = startupLog,
+        logMapper = logMapper
     )
 }

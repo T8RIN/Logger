@@ -22,11 +22,7 @@ internal class LogsWriter(
     private val fileProvider: String,
     private val logsFilename: String,
     isSyncCreate: Boolean,
-    startupLog: Logger.Log = Logger.Log(
-        tag = "Logger_Launch",
-        message = "* Application Launched *",
-        level = Logger.Level.Info
-    ),
+    startupLog: Logger.Log = STARTUP_LOG,
     private val logMapper: LogMapper = LogMapper.Default,
     private val maxFileSize: Int? = MAX_SIZE,
 ) {
@@ -137,6 +133,11 @@ internal class LogsWriter(
     }
 
     companion object {
+        internal val STARTUP_LOG = Logger.Log(
+            tag = "Logger_Launch",
+            message = "* Application Launched *",
+            level = Logger.Level.Info
+        )
         internal const val MAX_SIZE = 40 * 1024 * 1024 * 8
     }
 }
