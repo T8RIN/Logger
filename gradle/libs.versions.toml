@@ -9,7 +9,7 @@ libVersion = "1.0.2"
 
 desugaring = "2.1.5"
 kotlin = "2.1.10"
-agp = "8.8.2"
+agp = "8.13.0"
 
 detekt = "1.23.8"
 androidxCore = "1.15.0"
