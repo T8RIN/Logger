@@ -12,7 +12,7 @@ kotlin = "2.2.21"
 agp = "8.8.2"
 
 detekt = "1.23.8"
-androidxCore = "1.15.0"
+androidxCore = "1.17.0"
 
 [libraries]
 androidxCore = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
